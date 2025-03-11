@@ -4,17 +4,25 @@ from flask import json
 from flask import jsonify
 from flask import request
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
-from datetime import timedelta
+from flask_jwt_extended import (
+    create_access_token, 
+    get_jwt_identity, 
+    jwt_required, 
+    JWTManager,
+    set_access_cookies,
+    unset_jwt_cookies,
+    get_jwt
+)
                                                                                                                                        
 app = Flask(__name__)                                                                                                                  
                                                                                                                                        
 # Configuration du module JWT  #aa
 app.config["JWT_SECRET_KEY"] = "Ma_clé_secrete"  # Ma clée privée
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Expiration du token après 1h
+app.config["JWT_TOKEN_LOCATION"] = ["cookies"]  # Utilisation des Cookies pour le JWT
+app.config["JWT_COOKIE_SECURE"] = False          # Mettre à True si en HTTPS
+app.config["JWT_COOKIE_HTTPONLY"] = True         # Protection contre le JavaScript
+app.config["JWT_COOKIE_SAMESITE"] = "Lax"        # Protéger contre les attaques CSRF
 jwt = JWTManager(app)
   
 @app.route('/')
@@ -31,6 +39,7 @@ def login():
         return jsonify({"msg": "Mauvais utilisateur ou mot de passe"}), 401
 
     access_token = create_access_token(identity=username)
+    set_access_cookies(response, access_token)  # Stocker le token dans un Cookie
     return jsonify(access_token=access_token)
   
 @app.route("/admin", methods=["POST"])
