@@ -47,7 +47,7 @@ def admin():
         "access_token": access_token})
 
 @app.route('/formulaire')
-def hello_world():
+def formulaire():
     return render_template('formulaire.html')
 
 # Route protégée par un jeton valide
