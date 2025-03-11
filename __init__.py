@@ -19,6 +19,10 @@ jwt = JWTManager(app)
 
 @app.route('/')
 def hello_world():
+    return render_template('formulaire.html')
+  
+@app.route('/')
+def hello_world():
     return render_template('accueil.html')  #a
 
 # Création d'une route qui vérifie l'utilisateur et retour un Jeton JWT si ok.
