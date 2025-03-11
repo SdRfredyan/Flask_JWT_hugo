@@ -16,10 +16,6 @@ app = Flask(__name__)
 app.config["JWT_SECRET_KEY"] = "Ma_clé_secrete"  # Ma clée privée
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Expiration du token après 1h
 jwt = JWTManager(app)
-
-@app.route('/formulaire')
-def hello_world():
-    return render_template('formulaire.html')
   
 @app.route('/')
 def hello_world():
@@ -50,6 +46,10 @@ def admin():
         "msg": "Connecté en admin",
         "access_token": access_token})
 
+@app.route('/formulaire')
+def hello_world():
+    return render_template('formulaire.html')
+
 # Route protégée par un jeton valide
 @app.route("/protected", methods=["GET"])
 @jwt_required()
@@ -59,3 +59,4 @@ def protected():
                                                                                                                
 if __name__ == "__main__":
   app.run(debug=True)
+  
