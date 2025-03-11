@@ -17,7 +17,7 @@ app.config["JWT_SECRET_KEY"] = "Ma_clé_secrete"  # Ma clée privée
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)  # Expiration du token après 1h
 jwt = JWTManager(app)
 
-@app.route('/')
+@app.route('/formulaire')
 def hello_world():
     return render_template('formulaire.html')
   
